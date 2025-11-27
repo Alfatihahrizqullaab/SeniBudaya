@@ -1,0 +1,19 @@
+.btn-custom{
+    background-color: #3F2E1D;
+    color: white;
+    border-radius: 12px;
+    border:none;
+    padding: 12px 28px; 
+}
+
+.clamped{
+    display: -webkit-box;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.link-pointer{
+    cursor: pointer;
+    line-clamp: 2;
+}

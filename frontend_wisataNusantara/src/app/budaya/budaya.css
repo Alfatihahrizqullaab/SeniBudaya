@@ -1,0 +1,21 @@
+/* gambar tidak terlalu tinggi */
+.card-img-mobile {
+    height: 280px;
+    object-fit: cover;
+}
+
+@media (min-width: 992px) {
+    .card-img-mobile {
+        height: 350px; /* proporsional untuk desktop */
+    }
+}
+
+/* style card desktop (border, radius, dll) */
+@media (min-width: 992px) {
+    .card-responsive {
+        border: 3px solid #ffffff92;
+        border-radius: 18px;
+        overflow: hidden;
+        background-color: #5A4635; /* warna background text */
+    }
+}

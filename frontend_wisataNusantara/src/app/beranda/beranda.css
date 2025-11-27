@@ -1,0 +1,16 @@
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-image: none !important;
+}
+
+section {
+  margin-bottom: 0;
+  padding-bottom: 0; /* jika ada padding yang membuat spasi */
+}
+
+.container-fluid {
+  position: relative;
+  z-index: 1;
+}
+
+
