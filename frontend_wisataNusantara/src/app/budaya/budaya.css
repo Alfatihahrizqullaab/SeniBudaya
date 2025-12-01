@@ -19,3 +19,11 @@
         background-color: #5A4635; /* warna background text */
     }
 }
+
+.btn-custom{
+    background-color: #C6A667;
+}
+
+.btn-custom:hover{
+    background-color: rgb(78, 45, 12);
+}

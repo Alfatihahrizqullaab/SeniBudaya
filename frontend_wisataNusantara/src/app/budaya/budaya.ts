@@ -6,7 +6,7 @@ import { BUDAYA_DATA } from '../data/budaya_data';
 
 @Component({
   selector: 'app-budaya',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './budaya.html',
   styleUrl: './budaya.css',
 })
