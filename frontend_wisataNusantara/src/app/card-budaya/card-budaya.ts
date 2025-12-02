@@ -5,19 +5,18 @@ import { BudayaData as BudayaDataInterface } from './budaya_model';
 
 @Component({
   selector: 'app-card-budaya',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './card-budaya.html',
   styleUrl: './card-budaya.css',
 })
 
 export class CardBudaya {
   @Input() budaya: BudayaDataInterface = {
-    id: 0,
+    _id: 0,
     judul: '',
     gambar: '',
     tipe: '',
-    description: '',
-    tanggalPost: new Date(),
+    deskripsi: ''
   }
 
   isExpended: boolean = false; // default deskripsi dipotong

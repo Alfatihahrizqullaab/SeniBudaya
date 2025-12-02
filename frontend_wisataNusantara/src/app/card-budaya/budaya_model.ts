@@ -1,8 +1,7 @@
 export interface BudayaData {
-    id: number,
+    _id?: number,
     judul: string,
+    tipe: string,
+    deskripsi: string,
     gambar: string,
-    tipe?: string,
-    description?: string,
-    tanggalPost?: Date, 
 }

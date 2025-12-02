@@ -1,29 +1,52 @@
-/* gambar tidak terlalu tinggi */
 .card-img-mobile {
     height: 280px;
+    width: 100%;
     object-fit: cover;
 }
 
 @media (min-width: 992px) {
     .card-img-mobile {
-        height: 350px; /* proporsional untuk desktop */
+        height: 350px;
     }
-}
 
-/* style card desktop (border, radius, dll) */
-@media (min-width: 992px) {
     .card-responsive {
         border: 3px solid #ffffff92;
         border-radius: 18px;
         overflow: hidden;
-        background-color: #5A4635; /* warna background text */
+        background-color: #5A4635;
     }
 }
 
-.btn-custom{
+.btn-custom {
     background-color: #C6A667;
 }
 
-.btn-custom:hover{
+.btn-custom:hover {
     background-color: rgb(78, 45, 12);
+}
+
+.desc-limit {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* maksimal 3 baris */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Container input agar tetap stabil */
+.search-container {
+    max-width: 350px;
+    width: 100%;
+}
+
+/* Input tetap tinggi, tidak mengecil saat fokus */
+.search-input {
+    height: 36px;
+    min-width: 0; /* penting untuk flex agar tidak mengecil */
+    flex: 1 1 auto; /* tetap expand */
+}
+
+.btn-custom-x{
+    color:#C6A667;
+    border: 1px solid #C6A667;
 }

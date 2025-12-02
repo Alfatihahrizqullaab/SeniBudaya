@@ -8,10 +8,11 @@
       </button>
     </div>
     <p class="card-text pt-4 flex-grow-1" [class.clamped]="!isExpended">
-      {{budaya.description}} <span class="text-primary link-pointer" (click)="toggleDescripksi()">{{ isExpended ? "Sembunyikan" : "Selengkapnya" }}</span>
+      {{budaya.deskripsi}} <span class="text-primary link-pointer" routerLink="/detail-budaya" (click)="toggleDescripksi()">{{ isExpended ? "Sembunyikan" : "Selengkapnya" }}</span>
     </p>
     <p class="card-text mt-auto">
-      <small class="text-muted">{{ budaya.tanggalPost | date: 'd MMMM y'}}</small>
+      <!-- <small class="text-muted">{{ budaya.tanggalPost | date: 'd MMMM y'}}</small> -->
+      <small class="text-muted">2025-11-24</small>
     </p>
   </div>
 </div>

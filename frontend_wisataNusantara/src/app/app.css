@@ -1,0 +1,37 @@
+.navbar-nav .nav-link:hover {
+  color: #C8B28A !important;
+}
+
+.navbar-nav .nav-link::after {
+  content: '';
+  display: block;
+  padding-bottom: 0.5rem;
+  border-bottom: 0.1rem solid #C8B28A !important;
+  transform: scaleX(0);
+  transition: 0.2s linear;
+}
+
+.navbar-nav .nav-link:hover::after {
+  transform: scaleX(0.5);
+}
+
+@media (max-width: 991px) { /* breakpoint navbar bootstrap lg */
+    .navbar-nav .nav-link::after {
+        transform-origin: 0 0;
+    }
+
+    .navbar-nav .nav-link:hover::after {
+        transform: scaleX(0.1);
+    }
+}
+
+/* @media (max-width: 991px) {
+  .navbar-nav .nav-link:hover {
+    border-bottom: 2px solid black !important; /* garis tetap full kiri */
+  /* } */
+/* } */ 
+
+
+
+
+

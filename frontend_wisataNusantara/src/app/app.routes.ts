@@ -57,7 +57,7 @@ export const routes: Routes = [
         title: 'Tambah-Event'
     },
     {
-        path: 'detail-budaya',
+        path: 'detail-budaya/:id',
         component: DetailBudaya,
         title: 'Detail-Budaya'
     },

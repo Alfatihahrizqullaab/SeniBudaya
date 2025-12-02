@@ -19,23 +19,44 @@ const getAllBudaya = async(req, res) => {
 
 const createBudaya = async (req, res) => {
     try{
-        const newBudaya = new Budaya({
-            id: req.body.id,
-            judul: req.body.judul,
-            tipe: req.body.tipe,
-            gambar: req.body.gambar,
-            deskripsi: req.body.deskripsi
+
+        // console.log("REQ BODY:", req.body);
+        // console.log("REQ FILE:", req.file);
+
+        const { judul, tipe, deskripsi } = req.body;
+
+        if (!req.file) {
+        return res.status(400).json({
+            status: false,
+            message: "Gambar wajib diupload",
+        });
+        }
+
+        if(!judul || !tipe || !deskripsi) {
+            return res.status(400).json({
+                status: false,
+                message: "Semua field wajib di isi"
+            })
+        }
+
+        const newBudaya = await Budaya.create({
+            judul, 
+            tipe,
+            gambar: req.file.filename,
+            deskripsi
         })
-        const budaya = await newBudaya.save();
-        res.status(200).json({
-            status:true,
-            message: "Budaya berhasil ditambahkan",
-            data: budaya
+
+        res.status(201).json({
+            status: true,
+            message: "Budaya berhasil ditambahakan",
+            data: newBudaya
         })
     }catch(err){
-        res.status(500).json({
+        console.error("CREATE ERROR", err)
+        return res.status(500).json({
             status: true,
-            message: "Internal Server Error"
+            message: "Internal Server Error",
+            error: err.message
         })
     }
 }
@@ -53,7 +74,8 @@ const getBudayaById = async (req, res) => {
         }else{
             res.status(200).json({
                 status: true,
-                message: "Budaya berhasil ditampilkan"
+                message: "Budaya berhasil ditampilkan",
+                data: budaya
             })
         }
 
