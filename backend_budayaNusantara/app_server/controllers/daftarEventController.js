@@ -13,6 +13,17 @@ const daftarEvent = async (req, res) => {
             })
         }
 
+        // Hitung jumlah pendaftar saat ini
+        const totalPendaftar = await DaftarEventModels.countDocuments({event});
+
+        // Cek kouta penuh
+        if(totalPendaftar >= cekEvent.peserta){
+            return res.status(400).json({
+                success: false,
+                message: "Kouta perseta sudah penuh"
+            })
+        }
+
         const newDaftarEvent = new DaftarEventModels({
             Nik,
             fullName,

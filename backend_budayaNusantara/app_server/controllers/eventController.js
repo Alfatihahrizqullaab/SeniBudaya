@@ -1,4 +1,5 @@
 const Event = require("../models/event");
+const DaftarEventModels = require('../models/daftarEvent')
 
 const getAllEvent = async(req, res) => {
     try{
@@ -18,12 +19,19 @@ const getAllEvent = async(req, res) => {
 
 const createEvent = async(req, res) => {
     try{
-        const { judulEvent, gambar, lokasi, harga, tanggalEvent, jamEvent, peserta } = req.body;
+        const { judulEvent, lokasi, harga, tanggalEvent, jamEvent, peserta } = req.body;
 
         // Validasi semua inputan harus diisi
-        if(!judulEvent || !gambar || !lokasi || !harga || !tanggalEvent || !jamEvent || !peserta){
+        if(!judulEvent || !lokasi || !harga || !tanggalEvent || !jamEvent || !peserta){
             return res.status(400).json({
                 message: "Semua field wajib diisi"
+            })
+        }
+
+        if(!req.file){
+            return res.status(400).json({
+                status: false,
+                message: 'Gambar wajib diupload'
             })
         }
 
@@ -50,9 +58,18 @@ const createEvent = async(req, res) => {
             })
         }
 
+        if(harga === undefined || harga === null || harga === ''){
+            return res.status(400).json(
+                {
+                    success: false,
+                    message: "Harga wajib diisi"
+                }
+            )
+        }
+
         const newEvent = new Event({
             judulEvent,
-            gambar,
+            gambar: req.file.filename,
             harga,
             lokasi,
             tanggalEvent,
@@ -88,11 +105,17 @@ const detailEvent = async (req, res) => {
             })
         }
 
+        // Hitung jumlah peserta yang sudah mendaftar untuk event ini
+        const pesertaTerdaftar = await DaftarEventModels.countDocuments({ event: idEvent });
+
         res.status(200).json({
             status: true,
             message: "Event berhasil ditampilkan",
-            data: eventBudaya
-        })
+            data: {
+                ...eventBudaya.toObject(),
+                pesertaTerdaftar
+            }
+        });
     }catch(error){
         res.status(500).json({
             status: false,

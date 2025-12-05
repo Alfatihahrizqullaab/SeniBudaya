@@ -19,7 +19,17 @@
                         type="text"
                         class="form-control border-0"
                         style="height: 36px;" 
-                        placeholder="Pencarian...">
+                        placeholder="Pencarian..."
+                        [(ngModel)]="searchQuery"
+                        (input)="searchEvent()">
+                    
+                    <button class="btn btn-custom-x"
+                        type="button"
+                        *ngIf="searchQuery"
+                        (click)="clearSearch()"
+                        ><i class="bi bi-x-circle"></i>
+                    </button>
+                        
                 </div>
             </div>
         </div>
@@ -30,53 +40,30 @@
             <a routerLink="/tambah-event" class="btn btn-custom">Tambah Event</a>
         </div>
         <div class="row g-3">
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card shadow-sm" style="max-width: 100%;">
-                    <img src="https://mdbcdn.b-cdn.net/img/new/slides/041.webp" class="card-img-top" alt="...">
+            <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of filteredList">
+                <div class="card shadow-sm"  style="max-width: 100%;">
+                    <img [src]="item.gambar.includes('http') ? item.gambar : 'http://localhost:3000/images/' + item.gambar" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title mb-4 fw-bold">Card title</h5>
+                        <h5 class="card-title mb-4 fw-bold">{{item.judulEvent}}</h5>
                         
                         <div class="d-flex align-items-center mb-2">
                             <i class="bi bi-calendar me-2 text-primary"></i>
-                            <span><span class="fw-semibold">Jadwal</span>: 24 November 2026</span>
+                            <span><span class="fw-semibold">Jadwal</span>: {{formatDate(item.tanggalEvent)}}, {{item.jamEvent}}</span>
                         </div>
 
                         <div class="d-flex align-items-center mb-2">
                             <i class="bi bi-geo-alt me-2 text-danger"></i>
-                            <span><span class="fw-semibold">Lokasi</span>: Perumnas Palembang</span>
+                            <span><span class="fw-semibold">Lokasi</span>: {{item.lokasi}}</span>
                         </div>
 
                         <div class="d-flex align-items-center mb-3">
                             <i class="bi bi-tag me-2 text-success"></i>
-                            <span><span class="fw-semibold">Harga</span>: Free</span>
+                            <span><span class="fw-semibold">Harga</span>: {{formatPrice(item.harga)}}</span>
                         </div>
-                        <a routerLink="/detail-event" class="btn btn-custom">Lihat selengkapnya...</a>
+                        <a [routerLink]="['/detail-event', item._id]" class="btn btn-custom">Lihat selengkapnya...</a>
                     </div>
                 </div>
             </div>
-
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card shadow-sm" style="max-width: 100%;">
-                    <img src="https://mdbcdn.b-cdn.net/img/new/slides/041.webp" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text…</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="card shadow-sm" style="max-width: 100%;">
-                    <img src="https://mdbcdn.b-cdn.net/img/new/slides/041.webp" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text…</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 

@@ -62,12 +62,12 @@ export const routes: Routes = [
         title: 'Detail-Budaya'
     },
     {
-        path: 'detail-event',
+        path: 'detail-event/:id',
         component: DetailEvent,
         title: 'Detail-event'
     },
     {
-        path: 'daftar-event',
+        path: 'daftar-event/:id',
         component: DaftarEvent,
         title: 'Daftar-event'
     },

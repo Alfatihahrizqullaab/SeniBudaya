@@ -10,18 +10,66 @@
                     </div>
                     <div>
                         <div class="card-body ">
-                            <form >
+                            <!-- Succes message -->
+                            <div *ngIf="successMessage" class="alert alert-succes alert-dismissible fade show">
+                                <i class="bi bi-check-circle-fill me-2"></i>{{ successMessage }}
+                                <button type="button" class="btn-close" (click)="successMessage = ''" aria-label="Close"></button>
+                            </div>
+
+                            <!-- Error message -->
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorMessage">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ errorMessage }}
+                                <button type="button" class="btn-close" (click)="errorMessage = ''" aria-label="Close"></button>
+                            </div>
+                            <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
                                 <div class="mb-4">
                                     <label for="email" class="form-label fw-semibold">
                                         <i class="bi bi-envelope-fill me-2"></i>Email
                                     </label>
-                                    <input class="form-control form-control-lg" type="email" id="email" placeholder="Silahkan Masukkan Email Anda..." required>
+                                    <input 
+                                        class="form-control form-control-lg" 
+                                        type="email" 
+                                        id="email" 
+                                        formControlName="email"
+                                        [class.is-invalid]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
+                                        placeholder="Silahkan Masukkan Email Anda..." 
+                                        required>
+                                    <div class="invalid-feedback" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+                                        <div *ngIf="loginForm.get('email')?.errors?.['required']">
+                                            Email harus diisi
+                                        </div>
+                                        <div *ngIf="loginForm.get('email')?.errors?.['email']">
+                                            Format email tidak valid
+                                        </div>
+                                    </div>
+                                    <div class="form-text" *ngIf="!loginForm.get('email')?.touched || loginForm.get('email')?.valid">
+                                        Gunakan email yang terdaftar
+                                    </div>
                                 </div>
                                 <div class="mb-4">
                                     <label for="password" class="form-label fw-semibold">
                                         <i class="bi bi-lock-fill me-2"></i>Password
                                     </label>
-                                    <input class="form-control form-control-lg" type="password" id="password" placeholder="Silahkan Masukan Password Anda..." required>
+                                    <div class="input-group">
+                                        <input 
+                                            class="form-control form-control-lg" 
+                                            [type]="showPassword ? 'text' : 'password'" 
+                                            id="password" 
+                                            formControlName="password"
+                                            [class.is-invalid]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+                                            placeholder="Silahkan Masukan Password Anda..." required>
+                                        <button class="btn btn-outline-secondary" type="button" (click)="showPassword = !showPassword">
+                                            <i [ngClass]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                                        </button>
+                                    </div>
+                                    <div class="invalid-feedback" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                                        <div *ngIf="loginForm.get('password')?.errors?.['required']">
+                                            Password harus diisi
+                                        </div>
+                                        <div *ngIf="loginForm.get('password')?.errors?.['minlength']">
+                                            Password minimal 6 karakter
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- Remember Me & Forgot Password -->
@@ -41,8 +89,10 @@
                                 <div class="d-grid gap-2 mb-3">
                                     <button
                                         type="submit"
-                                        class="btn btn-custom btn-lg py text-white shadow-lg" >
-                                        <i  class="bi bi-box-arrow-in-right me-2"></i>Login
+                                        class="btn btn-custom btn-lg py text-white shadow-lg"
+                                        [disabled]="loginForm.invalid || isLoading">
+                                        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        <i *ngIf="!isLoading" class="bi bi-box-arrow-in-right me-2"></i>{{isLoading? 'memproses': 'Login'}}
                                     </button>
                                 </div>
                                 

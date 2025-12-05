@@ -5,7 +5,7 @@ const daftarEventSchema = new mongoose.Schema({
         type: String,
         required: [true, "Nik wajib diisi"],
         match: [/^\d{16}$/, "NIK harus 16 digit angka"],
-        unique: true
+        // unique: true
     },
     fullName: {
         type: String,

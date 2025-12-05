@@ -1,5 +1,5 @@
 <!-- Page Background -->
-<section class="py-5" style="background-color: #3F2E1D; min-height: 100vh;">
+<section class="py-5"  style="background-color: #3F2E1D; min-height: 100vh;">
     <div class="container">
         <div class="row justify-content-center">
             
@@ -14,7 +14,16 @@
                             Daftar Event Budaya
                         </h3>
 
-                        <form>
+                        <!-- Error Alert -->
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorMessage">
+                            {{errorMessage}}
+                        </div>
+                        <!-- Error Alert -->
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="successMessage">
+                            {{successMessage}}
+                        </div>
+
+                        <form [formGroup]="formDaftar" (ngSubmit)="onSubmit()">
 
                             <!-- NIK -->
                             <div class="mb-4">
@@ -25,7 +34,15 @@
                                     type="text" 
                                     class="form-control"
                                     placeholder="Masukkan NIK Anda..."
+                                    formControlName="Nik"
+                                    [class.is-invalid]="formDaftar.get('Nik')?.touched && formDaftar.get('Nik')?.invalid"
+                                    required
                                 >
+                                <div class="invalid-feedback" *ngIf="formDaftar.get('Nik')?.touched && formDaftar.get('Nik')?.invalid">
+                                    <div *ngIf="formDaftar.get('Nik')?.errors?.['required']">Nik wajib diisi</div>
+                                    <div *ngIf="formDaftar.get('Nik')?.errors?.['pattern']">Nik wajib memiliki format angka dan minimal 16 karakter</div>
+                                </div>
+                                <div class="form-text" *ngIf="!formDaftar.get('Nik')?.touched && !formDaftar.get('Nik')?.valid">Nik anda aman tidak akan disebarkan</div>
                             </div>
 
                             <!-- Nama Lengkap -->
@@ -37,7 +54,14 @@
                                     type="text" 
                                     class="form-control"
                                     placeholder="Masukkan nama lengkap..."
+                                    formControlName="fullName"
+                                    [class.is-invalid]="formDaftar.get('fullName')?.touched && formDaftar.get('fullName')?.invalid"
                                 >
+                                <div class="invalid-feedback" *ngIf="formDaftar.get('fullName')?.touched && formDaftar.get('fullName')?.invalid">
+                                    <div *ngIf="formDaftar.get('fullName')?.errors?.['required']">nama lengkap wajib diisi</div>
+                                    <div *ngIf="formDaftar.get('fullName')?.errors?.['minlength']">nama lengkap anda wajib 3 angka</div>
+                                </div>
+                                <div class="form-text" *ngIf="!formDaftar.get('fullName')?.touched && !formDaftar.get('fullName')?.valid">nama lengkap sudah sesuai dibutuhkan</div>
                             </div>
 
                             <!-- Usia -->
@@ -49,7 +73,15 @@
                                     type="number" 
                                     class="form-control"
                                     placeholder="Masukkan usia Anda..."
+                                    formControlName="usia"
+                                    [class.is-invalid]="formDaftar.get('usia')?.touched && formDaftar.get('usia')?.invalid"
                                 >
+                                <div class="invalid-feedback" *ngIf="formDaftar.get('usia')?.touched && formDaftar.get('usia')?.invalid">
+                                    <div *ngIf="formDaftar.get('usia')?.errors?.['required']">usia wajib diisi</div>
+                                    <div *ngIf="formDaftar.get('usia')?.errors?.['min']">minimal usia 1 tahun</div>
+                                    <div *ngIf="formDaftar.get('usia')?.errors?.['max']">maksimal usia 100 tahun</div>
+                                </div>
+                                <div class="form-text" *ngIf="!formDaftar.get('usia')?.touched && !formDaftar.get('usia')?.valid">usia anda sudah sesuai dibutuhkan</div>
                             </div>
 
                             <!-- Tanggal Lahir -->
@@ -60,7 +92,13 @@
                                 <input 
                                     type="date" 
                                     class="form-control"
+                                    formControlName="tanggalLahir"
+                                    [class.is-invalid]="formDaftar.get('tanggalLahir')?.touched && formDaftar.get('tanggalLahir')?.invalid"
                                 >
+                                <div class="invalid-feedback" *ngIf="formDaftar.get('tanggalLahir')?.touched && formDaftar.get('tanggalLahir')?.invalid">
+                                    <div *ngIf="formDaftar.get('tanggalLahir')?.errors?.['required']">tanggal lahir wajib diisi</div>
+                                </div>
+                                <div class="form-text" *ngIf="!formDaftar.get('tanggalLahir')?.touched && !formDaftar.get('tanggalLahir')?.valid">tanggal lahir sudah sesuai dibutuhkan</div>
                             </div>
 
                             <!-- Tempat Tinggal -->
@@ -72,7 +110,14 @@
                                     type="text" 
                                     class="form-control"
                                     placeholder="Masukkan alamat / kota tinggal..."
+                                    formControlName="tempatTinggal"
+                                    [class.is-invalid]="formDaftar.get('tempatTinggal')?.touched && formDaftar.get('tempatTinggal')?.invalid"
                                 >
+                                <div class="invalid-feedback" *ngIf="formDaftar.get('tempatTinggal')?.touched && formDaftar.get('tempatTinggal')?.invalid">
+                                    <div *ngIf="formDaftar.get('tempatTinggal')?.errors?.['required']">tempat tinggal wajib diisi</div>
+                                    <div *ngIf="formDaftar.get('tempatTinggal')?.errors?.['minlength']">tempat tinggal anda wajib 3 angka</div>
+                                </div>
+                                <div class="form-text" *ngIf="!formDaftar.get('tempatTinggal')?.touched && !formDaftar.get('tempatTinggal')?.valid">tempat tinggal sudah sesuai dibutuhkan</div>
                             </div>
 
                             <!-- Submit Button -->

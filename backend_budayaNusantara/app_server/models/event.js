@@ -31,7 +31,7 @@ const eventSchema = new mongoose.Schema({
         type: Number,
         required: [true, "jumlah peserta harus di isi"],
         max: 100
-    }
+    },
 
 
 });

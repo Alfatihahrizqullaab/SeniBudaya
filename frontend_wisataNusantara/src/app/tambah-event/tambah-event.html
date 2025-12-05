@@ -13,7 +13,16 @@
                             Tambah Event
                         </h3>
 
-                        <form>
+                        <!-- Error Alert -->
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorMessage">
+                            {{errorMessage}}
+                        </div>
+                        <!-- Error Alert -->
+                        <div class="alert alert-success alert-dismissible fade show" role="alert" *ngIf="successMessage">
+                            {{successMessage}}
+                        </div>
+
+                        <form [formGroup]="formEvent" (ngSubmit)="onSubmit()">
 
                             <!-- Judul Event -->
                             <div class="mb-4">
@@ -24,7 +33,14 @@
                                     type="text" 
                                     class="form-control"
                                     placeholder="Masukkan judul event..."
+                                    formControlName="judulEvent"
+                                    [class.is-invalid]="formEvent.get('judulEvent')?.touched && formEvent.get('judulEvent')?.invalid"
+                                    required
                                 >
+                                <div class="invalid-feedback" *ngIf="formEvent.get('judulEvent')?.touched && formEvent.get('judulEvent')?.touched">
+                                    <div *ngIf="formEvent.get('judulEvent')?.errors?.['required']">Judul Event tidak boleh kosong</div>
+                                </div>
+                                <div class="form-text" *ngIf="!formEvent.get('judulEvent')?.touched && !formEvent.get('judulEvent')?.valid">Judul sudah sesuai dibutuhkan</div>
                             </div>
 
                             <!-- Jadwal & Jam (1 Baris) -->
@@ -38,7 +54,14 @@
                                     <input 
                                         type="date" 
                                         class="form-control"
+                                        formControlName="tanggalEvent"
+                                        [class.is-invalid]="formEvent.get('tanggalEvent')?.touched && formEvent.get('tanggalEvent')?.invalid"
+                                        required
                                     >
+                                    <div class="invalid-feedback" *ngIf="formEvent.get('tanggalEvent')?.touched && formEvent.get('tanggalEvent')?.touched">
+                                        <div *ngIf="formEvent.get('tanggalEvent')?.errors?.['required']">Jadwal Event tidak bole kosong</div>
+                                    </div>
+                                    <div class="form-text" *ngIf="!formEvent.get('tanggalEvent')?.touched && !formEvent.get('tanggalEvent')?.valid">Judul sudah sesuai dibutuhkan</div>
                                 </div>
 
                                 <!-- Jam -->
@@ -49,7 +72,13 @@
                                     <input 
                                         type="time" 
                                         class="form-control"
+                                        formControlName="jamEvent"
+                                        [class.is-invalid]="formEvent.get('jamEvent')?.touched && formEvent.get('jamEvent')?.invalid"
                                     >
+                                    <div class="invalid-feedback" *ngIf="formEvent.get('jamEvent')?.touched && formEvent.get('jamEvent')?.touched">
+                                        <div *ngIf="formEvent.get('jamEvent')?.errors?.['required']">Jam tidak bole kosong</div>
+                                    </div>
+                                    <div class="form-text" *ngIf="!formEvent.get('jamEvent')?.touched && !formEvent.get('jamEvent')?.valid">Judul sudah sesuai dibutuhkan</div>
                                 </div>
 
                             </div>
@@ -63,7 +92,33 @@
                                     type="text" 
                                     class="form-control"
                                     placeholder="Masukkan lokasi event..."
+                                    formControlName="lokasi"
+                                    [class.is-invalid]="formEvent.get('lokasi')?.touched && formEvent.get('lokasi')?.invalid"
                                 >
+                                <div class="invalid-feedback" *ngIf="formEvent.get('lokasi')?.touched && formEvent.get('lokasi')?.touched">
+                                    <div *ngIf="formEvent.get('lokasi')?.errors?.['required']">Lokasi tidak bole kosong</div>
+                                </div>
+                                <div class="form-text" *ngIf="!formEvent.get('lokasi')?.touched && !formEvent.get('lokasi')?.valid">Judul sudah sesuai dibutuhkan</div>
+                            </div>
+
+                            <!-- Upload Gambar -->
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold text-black">
+                                    <i class="bi bi-image-fill me-2"></i>Gambar
+                                </label>
+                                <input 
+                                    type="file" 
+                                    class="form-control" 
+                                    (change)="onFileSelected($event)" 
+                                    
+                                    formControlName="gambar" id="gambar" 
+                                    [class.is-invalid]="formEvent.get('gambar')?.touched && formEvent.get('gambar')?.invalid" 
+                                    required>
+                                <div class="invalid-feedback" *ngIf="formEvent.get('gambar')?.touched && formEvent.get('gambar')?.invalid" >
+                                    <div *ngIf="formEvent.get('gambar')?.errors?.['required']">
+                                        Gambar belum di upload
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Harga -->
@@ -75,13 +130,19 @@
                                     type="number" 
                                     class="form-control"
                                     placeholder="Masukkan harga atau 0 jika gratis..."
+                                    formControlName="harga"
+                                    [class.is-invalid]="formEvent.get('harga')?.touched && formEvent.get('harga')?.invalid"
                                 >
+                                <div class="invalid-feedback" *ngIf="formEvent.get('harga')?.touched && formEvent.get('harga')?.touched">
+                                    <div *ngIf="formEvent.get('harga')?.errors?.['required']">Harga belum diisi</div> 
+                                </div>
+                                <div class="form-text" *ngIf="!formEvent.get('harga')?.touched && !formEvent.get('harga')?.valid">Harga sudah diisi</div>
                             </div>
 
                             <!-- Peserta -->
                             <div class="mb-4">
                                 <label class="form-label fw-semibold text-black">
-                                    <i class="bi bi-people me-2"></i>Harga
+                                    <i class="bi bi-people me-2"></i>Peserta
                                 </label>
                                 <input 
                                     type="number" 
@@ -89,7 +150,15 @@
                                     placeholder="Masukkan jumlah peserta"
                                     min="1"
                                     max="100"
+                                    formControlName="peserta"
+                                    [class.is-invalid]="formEvent.get('peserta')?.touched && formEvent.get('peserta')?.invalid"
                                 >
+                                <div class="invalid-feedback" *ngIf="formEvent.get('peserta')?.touched && formEvent.get('peserta')?.touched">
+                                    <div *ngIf="formEvent.get('peserta')?.errors?.['required']">Peserta belum diisi</div>
+                                    <div *ngIf="formEvent.get('peserta')?.errors?.['max']">Peserta maximal 100</div>
+                                    <div *ngIf="formEvent.get('peserta')?.errors?.['min']">Peserta minimal 1</div>
+                                </div>
+                                <div class="form-text" *ngIf="!formEvent.get('peserta')?.touched && !formEvent.get('peserta')?.valid">Judul sudah sesuai dibutuhkan</div>
                             </div>
 
                             <!-- Submit Button -->

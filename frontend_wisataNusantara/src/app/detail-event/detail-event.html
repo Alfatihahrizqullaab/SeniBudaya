@@ -1,7 +1,7 @@
-<section class="detail-event py-5 min-vh-100" style="background-color: #3F2E1D;">
+<section class="detail-event py-5 min-vh-100" *ngIf="!isLoading && event" style="background-color: #3F2E1D;">
     <!-- Gambar Banner -->
     <div class="d-flex justify-content-center mb-4">
-        <img src="assets/images/tarian1.jpg" 
+        <img [src]="event.gambar.includes('http') ? event.gambar : 'http://localhost:3000/images/' + event.gambar" 
              alt="" 
              class="img-fluid shadow"
              style="height:450px; object-fit:cover; width: 100%; border-radius: 10px;">
@@ -12,7 +12,7 @@
         <!-- Judul Event -->
         <div class="text-center mb-4">
             <h1 class="fw-bold" style="font-family: 'Cinzel'; color: #C6A667;">
-                Pekan Kreativitas Budaya Indonesia
+                {{event.judulEvent}}
             </h1>
             <div style="width: 120px; height: 3px; background:#C6A667; margin: 10px auto; border-radius: 5px;"></div>
         </div>
@@ -27,7 +27,7 @@
                 <div>
                     <span class="text-white"> 
                         <span class="fw-bold" style="color:#C6A667;">Jadwal</span><br>
-                        24 November 2026 : 20.00
+                        {{formatDate(event.tanggalEvent)}} : {{event.jamEvent}}
                     </span>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                 <div>
                     <span class="text-white"> 
                         <span class="fw-bold" style="color:#C6A667;">Lokasi</span><br>
-                        Perumnas Palembang
+                        {{event.lokasi}}
                     </span>
                 </div>
             </div>
@@ -49,7 +49,7 @@
                 <div>
                     <span class="text-white"> 
                         <span class="fw-bold" style="color:#C6A667;">Harga</span><br>
-                        Gratis / Free
+                        {{formatPrice(event.harga)}}
                     </span>
                 </div>
             </div>
@@ -59,13 +59,13 @@
                 <div>
                     <span class="text-white"> 
                         <span class="fw-bold" style="color:#C6A667;">Peserta</span><br>
-                        0 / 50
+                        {{event.pesertaTerdaftar || 0}} / {{event.peserta}}
                     </span>
                 </div>
             </div>
 
-            <div class="d-flex align-items-center">
-                <a routerLink="/daftar-event" class="btn btn-custom">
+            <div [routerLink]="['/daftar-event', event._id]" class="d-flex align-items-center">
+                <a  class="btn btn-custom">
                     <i class="bi bi-box-arrow-in-right me-3"></i>Daftar Sekarang
                 </a>
             </div>
