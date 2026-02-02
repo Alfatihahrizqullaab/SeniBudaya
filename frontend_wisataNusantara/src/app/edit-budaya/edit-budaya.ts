@@ -1,31 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
 import { BudayaService } from '../services/budaya';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormsModule, Validators, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-tambah-budaya',
-  standalone: true,
-  // Mengimpor modul-modul yang dibutuhkan oleh komponen
+  selector: 'app-edit-budaya',
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
-  templateUrl: './tambah-budaya.html',
-  styleUrl: './tambah-budaya.css',
+  templateUrl: './edit-budaya.html',
+  styleUrl: './edit-budaya.css',
 })
-export class TambahBudaya {
-
-  // Variabel formData akan menampung seluruh input dari form (judul, tipe, deskripsi)
+export class EditBudaya implements OnInit{
   formData: FormGroup;
 
-  // error Message
-  errorMessage = "";
-
+  errorMessage = '';
   successMessage = '';
 
-  // Untuk menyimpan file gambar yang dipilih
   selectedFile: File | null = null;
+  id!: string;
 
-  constructor(private fb: FormBuilder, private budayaService: BudayaService, private router: Router){
+   constructor(private fb: FormBuilder, private budayaService: BudayaService, private router: Router, private route: ActivatedRoute){
 
     // Membuat struktur form dengan validasi setiap field
     this.formData = this.fb.group({
@@ -38,8 +33,28 @@ export class TambahBudaya {
       // Deskripsi wajib diisi dan minimal 10 karakter
       deskripsi: ['', [Validators.required, Validators.minLength(10)]],
 
-      gambar: ['',[Validators.required]]
+      gambar: ['']
     });
+  }
+
+  ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get('id')!;
+    this.loadBudayaData();
+  }
+
+  loadBudayaData(){
+    this.budayaService.getBudayaById(this.id).subscribe({
+      next: (data) => {
+        this.formData.patchValue({
+          judul: data.judul,
+          tipe: data.tipe,
+          deskripsi: data.deskripsi
+        });
+      },
+      error: () => {
+        this.errorMessage = 'Gagal memuat data budaya';
+      }
+    })
   }
 
   // Menangkap file yang dipilih user dari input type="file"
@@ -47,39 +62,32 @@ export class TambahBudaya {
     this.selectedFile = event.target.files[0];
   }
 
-  // Fungsi yang dijalankan ketika user menekan tombol submit
-  onSubmit(){
-
-    // Membuat FormData untuk mengirim data termasuk file (gambar)
+  Submit(){
     const data = new FormData();
-    
-    // Mengambil nilai setiap field dari FormGroup
+
     data.append("judul", this.formData.get('judul')?.value);
     data.append("tipe", this.formData.get('tipe')?.value);
     data.append("deskripsi", this.formData.get('deskripsi')?.value);
 
-    // Menambahkan file gambar ke FormData
     if (this.selectedFile) {
       data.append("gambar", this.selectedFile);
     }
 
-    // Mengirim data ke backend melalui service
-    this.budayaService.createBudaya(data).subscribe({
+    this.budayaService.editBudaya(this.id, data).subscribe({
       next: (res) => {
         this.router.navigate(
           ['/budaya'],
-          { state: {successMessage: 'Berhasil menyimpan budaya!'} }
+          {state: {successMessage: 'Berhasil mengupdate budaya'}}
         )
         console.log(res);
       },
       error: (err) => {
-        this.errorMessage = 'Gagal menyimpan'
-        console.error(err);
+        this.errorMessage = 'Gagal mengupdate'
 
         setTimeout(() => {
           this.errorMessage = '';
         }, 3000)
       }
-    });
+    })
   }
 }

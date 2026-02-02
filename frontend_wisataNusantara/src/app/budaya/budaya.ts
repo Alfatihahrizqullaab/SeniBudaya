@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { Router } from '@angular/router';
+import { Router, RouterLink,  } from '@angular/router';
 import { BudayaData as BudayaDataInterface } from '../card-budaya/budaya_model';
 import { BUDAYA_DATA } from '../data/budaya_data';
+import { ActivatedRoute } from '@angular/router';
 import { BudayaService } from '../services/budaya';
+import { AuthService } from '../services/auth.service';
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-budaya',
@@ -24,21 +27,22 @@ export class Budaya implements OnInit{
   isLoading: boolean = false;
   errorMessage: string = '';
   
-
   searchQuery: string = "";
 
   successMessage: string = '';
 
+  selectedIdToDelete: string | number | null = null;
+
   private fallbackData: BudayaDataInterface[] = [
     {
-        _id: 1,
+      _id: '1',
         judul: 'Tari Kecak',
         gambar: 'https://mdbcdn.b-cdn.net/img/new/slides/041.webp',
         tipe: 'Tarian',
         deskripsi: 'Tari Kecak adalah tarian tradisional Bali dengan ciri khas suara "cak" berirama.',
     },
     {
-        _id: 2,
+      _id: '2',
         judul: 'Wayang Kulit',
         gambar: 'https://mdbcdn.b-cdn.net/img/new/slides/041.webp',
         tipe: 'Pertunjukan',
@@ -46,7 +50,7 @@ export class Budaya implements OnInit{
         
     },
     {
-        _id: 3,
+      _id: '3',
         judul: 'Rumah Adat Gadang',
         gambar: 'https://mdbcdn.b-cdn.net/img/new/slides/041.webp',
         tipe: 'Arsitektur',
@@ -54,19 +58,19 @@ export class Budaya implements OnInit{
     }
   ]
 
-  constructor(private budayaService: BudayaService, private router: Router){}
+  constructor(private budayaService: BudayaService, public authService: AuthService,private router: Router, private route: ActivatedRoute){}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    // Untuk menampilkan pesan success dari state navigasi tambah budaya
     const state = history.state;
+    if (state && state['successMessage']) {
+      this.successMessage = state['successMessage'];
+      setTimeout(() => {
+        this.successMessage = '';
+      }, 3000);
+    }
 
-  if (state && state['successMessage']) {
-    this.successMessage = state['successMessage'];
-
-    setTimeout(() => {
-      this.successMessage = '';
-    }, 3000);
-  }
-
+    // Memuat seluruh data budaya yang ada dibackend
     this.loadBudayaData();
   }
 
@@ -91,6 +95,55 @@ export class Budaya implements OnInit{
     });
   }
 
+  // Membuka modal hapus dan menyimpan id
+  openHapusModal(id: string | number){
+    if(id === undefined) return;
+    this.selectedIdToDelete = id;
+
+    const modalEl = document.getElementById('hapusModal');
+    if(modalEl){
+      const modal = new bootstrap.Modal(modalEl);
+      modal.show()
+    }
+  }
+
+confrimHapus(){
+  if(this.selectedIdToDelete === null) return;
+
+  this.isLoading = true;
+  this.errorMessage = '';
+  const idStr = this.selectedIdToDelete.toString();
+
+  this.budayaService.deleteBudaya(idStr).subscribe({
+    next: (res) => {
+      // hapus dari array lokal
+      this.budayaList = this.budayaList.filter(b => b._id !== idStr);
+      this.filteredList = this.filteredList.filter(b => b._id !== idStr);
+      this.isLoading = false;
+
+      // tutup modal
+      const modalEl = document.getElementById('hapusModal');
+      if(modalEl){
+        const modalInstance = bootstrap.Modal.getInstance(modalEl);
+        if(modalInstance) modalInstance.hide();
+      }
+
+      // tampilkan pesan sukses
+      this.successMessage = res.message || 'Budaya berhasil dihapus';
+      setTimeout(() => this.successMessage = '', 3000);
+
+      this.selectedIdToDelete = null;
+    },
+    error: (err) => {
+      this.errorMessage = 'Gagal menghapus budaya';
+      this.isLoading = false;
+      console.error(err);
+    }
+  });
+}
+
+
+
   searchBudaya(){
     this.applySearch();
   }
@@ -109,5 +162,10 @@ export class Budaya implements OnInit{
     if(!this.searchQuery){
       this.filteredList = [...this.budayaList];
     }
+  }
+
+  logout(){
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

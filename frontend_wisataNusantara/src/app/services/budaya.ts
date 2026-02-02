@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BudayaData } from '../card-budaya/budaya_model';
 import { map } from 'rxjs/operators';
+import { Budaya } from '../budaya/budaya';
 
 @Injectable({
   providedIn: 'root',
@@ -26,5 +27,15 @@ export class BudayaService {
 
   createBudaya(data: FormData): Observable<any>{
     return this.http.post<BudayaData>(`${this.apiUrl}/tambah-budaya`, data);
+  }
+
+  deleteBudaya(id: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/hapus-budaya/${id}`);
+  }
+
+  editBudaya(id: string, data: FormData): Observable<BudayaData>{
+    return this.http.put<any>(`${this.apiUrl}/edit-budaya/${id}`, data).pipe(
+      map(res => res.data)
+    )
   }
 }

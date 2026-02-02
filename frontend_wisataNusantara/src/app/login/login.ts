@@ -6,7 +6,7 @@ import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule,],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -36,6 +36,7 @@ export class Login {
         next: (response) => {
           console.log('Login succesfull', response);
           this.successMessage = response.message || 'login berhasil'
+          this.isLoading = false;
 
           if(response.data){
             this.authService.saveUserData(response.data);

@@ -5,8 +5,8 @@ import { EventService } from '../services/event.service';
 import { eventInterface } from './event-model';
 import { FormsModule } from '@angular/forms';
 import { Util } from '../utils/util';
-
-
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-event',
@@ -54,7 +54,7 @@ export class Event implements OnInit{
   }
   ]
 
-  constructor(private eventService: EventService){}
+  constructor(private eventService: EventService, public authService: AuthService, private router: Router){}
 
   ngOnInit(): void {
       this.loadEventData();
@@ -113,6 +113,11 @@ export class Event implements OnInit{
     }
   }
 
+
+  logout(){
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
   // // Format harga ke Rupiah
   // formatPrice(harga: number): string {
   //   return new Intl.NumberFormat('id-ID', {

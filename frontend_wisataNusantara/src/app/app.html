@@ -13,11 +13,20 @@
 
       <!-- MENU DI TENGAH -->
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-light" style="font-family: 'Roboto';">
-        <li class="nav-item"><a class="nav-link px-3 text-white" routerLink="">Beranda</a></li>
+        <li class="nav-item"><a class="nav-link px-3 text-white" routerLinkActive="active" routerLink="/">Beranda</a></li>
         <li class="nav-item"><a class="nav-link px-3 text-white" routerLink="/budaya">Budaya</a></li>
         <li class="nav-item"><a class="nav-link px-3 text-white" routerLink="/event">Event</a></li>
         <li class="nav-item"><a class="nav-link px-3 text-white" [routerLink]="['/']" fragment="tentang-kami">Tentang kami</a></li>
         <li class="nav-item"><a class="nav-link px-3 text-white" routerLink="/hubungi-kami">Hubungi kami</a></li>
+        @if (!authService.isLoggedIn()){
+          <li class="nav-item">
+            <a class="nav-link px-3 text-white" style="cursor: pointer;" routerLink="/login">Login</a>
+          </li>
+        } @else {
+          <li class="nav-item">
+            <a class="nav-link px-3 text-white" style="cursor: pointer;" (click)="logout()">Logout</a>
+          </li>
+        }
       </ul>
 
       <!-- IKON SOSMED DI KANAN -->

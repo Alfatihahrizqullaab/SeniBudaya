@@ -10,6 +10,8 @@ import { TambahEvent } from './tambah-event/tambah-event';
 import { DetailBudaya } from './detail-budaya/detail-budaya';
 import { DetailEvent } from './detail-event/detail-event';
 import { DaftarEvent } from './daftar-event/daftar-event';
+import { authGuard } from './guards/auth.guard';
+import { EditBudaya } from './edit-budaya/edit-budaya';
 
 export const routes: Routes = [
     {
@@ -49,12 +51,14 @@ export const routes: Routes = [
     {
         path: 'tambah-budaya',
         component: TambahBudaya,
-        title: 'Tambah-Budaya'
+        title: 'Tambah-Budaya',
+        canActivate: [authGuard]
     },
     {
         path: 'tambah-event',
         component: TambahEvent,
-        title: 'Tambah-Event'
+        title: 'Tambah-Event',
+        canActivate: [authGuard]
     },
     {
         path: 'detail-budaya/:id',
@@ -65,6 +69,11 @@ export const routes: Routes = [
         path: 'detail-event/:id',
         component: DetailEvent,
         title: 'Detail-event'
+    },
+    {
+        path: 'edit-budaya/:id',
+        component: EditBudaya,
+        title: 'Edit-budaya'
     },
     {
         path: 'daftar-event/:id',

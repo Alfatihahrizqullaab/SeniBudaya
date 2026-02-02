@@ -4,13 +4,13 @@ import { Observable } from "rxjs";
 
 
 export interface AuthResponse{
-    succes: boolean;
+    success: boolean;
     message: string;
     data?: {
         id: string;
         name: string;
-        password: string;
-        createdAt?: string
+        email: string;
+        token: string;
     }
 }
 

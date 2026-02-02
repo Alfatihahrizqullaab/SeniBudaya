@@ -35,10 +35,12 @@
         </div>
     </div>
 
-    <div class="container">       
-        <div class="d-flex my-3 justify-content-end text-white">
-            <a routerLink="/tambah-event" class="btn btn-custom">Tambah Event</a>
-        </div>
+    <div class="container">      
+        @if (authService.isLoggedIn()){ 
+            <div class="d-flex my-3 justify-content-end text-white">
+                <a routerLink="/tambah-event" class="btn btn-custom">Tambah Event</a>
+            </div>
+        }
         <div class="row g-3">
             <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of filteredList">
                 <div class="card shadow-sm"  style="max-width: 100%;">

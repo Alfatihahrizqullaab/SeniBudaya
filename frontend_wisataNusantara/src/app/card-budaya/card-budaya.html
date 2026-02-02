@@ -1,17 +1,33 @@
-<div class="card mb-3 shadow-lg h-100">
-  <img [src]="budaya.gambar" class="card-img-top" [alt]="budaya.judul"/>
+<div class="card mb-3 shadow-lg h-100 d-flex flex-column animate__animated animate__slideInUp">
+  <img 
+    [src]="budaya.gambar.includes('http') ? budaya.gambar : 'http://localhost:3000/images/' + budaya.gambar" 
+    class="card-img-top" 
+    [alt]="budaya.judul"
+  />
+
   <div class="card-body d-flex flex-column">
+
     <h1 class="card-title">{{ budaya.judul }}</h1>
-    <div class="d-flex">
-      <button class="btn btn-custom fw-bold">
-        {{budaya.tipe}}
-      </button>
-    </div>
-    <p class="card-text pt-4 flex-grow-1" [class.clamped]="!isExpended">
-      {{budaya.deskripsi}} <span class="text-primary link-pointer" routerLink="/detail-budaya" (click)="toggleDescripksi()">{{ isExpended ? "Sembunyikan" : "Selengkapnya" }}</span>
+
+    <button class="btn btn-custom fw-bold mb-2">
+      {{ budaya.tipe }}
+    </button>
+
+    <!-- Deskripsi -->
+    <p class="card-text clamped">
+      {{ budaya.deskripsi }}
     </p>
+
+    <!-- Selengkapnya hanya muncul jika teks panjang -->
+    <span 
+      *ngIf="isLongText"
+      class="text-primary link-pointer"
+      (click)="goToDetail()"
+    >
+      Selengkapnya...
+    </span>
+
     <p class="card-text mt-auto">
-      <!-- <small class="text-muted">{{ budaya.tanggalPost | date: 'd MMMM y'}}</small> -->
       <small class="text-muted">2025-11-24</small>
     </p>
   </div>

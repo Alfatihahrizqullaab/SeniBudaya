@@ -1,0 +1,116 @@
+<!-- Page Background -->
+<section class="py-5" style="background-color: #3F2E1D; min-height: 100vh;">
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <div class="col-lg-6">
+                <!-- Card -->
+                <div class="card shadow border-0" style="background-color: #C6A667;">
+                    <div class="card-body p-4">
+
+                        <!-- Header -->
+                        <h3 class="text-center fw-bold mb-4" style="font-family: 'Roboto'; color: #3F2E1D;">
+                            Edit Budaya Data
+                        </h3>
+
+                        <!-- Form -->
+                        <form [formGroup]="formData" (ngSubmit)="Submit()">
+
+                            <!-- Upload Gambar -->
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold text-black">
+                                    <i class="bi bi-image-fill me-2"></i>Gambar
+                                </label>
+                                <input 
+                                    type="file" 
+                                    class="form-control"
+                                    (change)="onFileSelected($event)" 
+                                    formControlName="gambar" id="gambar" 
+                                    [class.is-invalid]="formData.get('gambar')?.touched && formData.get('gambar')?.invalid" 
+                                >
+                                <div class="invalid-feedback" *ngIf="formData.get('gambar')?.touched && formData.get('gambar')?.invalid" >
+                                    <div *ngIf="formData.get('gambar')?.errors?.['required']">
+                                        Gambar belum di upload
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Judul -->
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold text-black">
+                                    <i class="bi bi-card-heading me-2"></i>Judul
+                                </label>
+                                <input 
+                                    type="text" 
+                                    class="form-control"
+                                    placeholder="Masukkan judul..."
+                                    formControlName="judul"
+                                    [class.is-invalid]="formData.get('judul')?.touched && formData.get('judul')?.invalid"
+                                    required
+                                >
+                                <div class="invalid-feedback" *ngIf="formData.get('judul')?.touched && formData.get('judul')?.invalid">
+                                    <div *ngIf="formData.get('judul')?.errors?.['required']">Judul wajib diisi</div>
+                                    <div *ngIf="formData.get('judul')?.errors?.['minlength']">Judul minimal 2 karakter</div>
+                                </div>
+                                <div class="form-text" *ngIf="!formData.get('judul')?.touched && !formData.get('judul')?.valid">Judul sudah sesuai dibutuhkan</div>
+                            </div>
+
+                            <!-- Type -->
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold text-black">
+                                    <i class="bi bi-tags-fill me-2"></i>Tipe
+                                </label>
+                                <input 
+                                    type="text" 
+                                    class="form-control"
+                                    placeholder="Masukkan tipe..."
+                                    formControlName="tipe"
+                                    [class.is-invalid]="formData.get('tipe')?.touched && formData.get('tipe')?.invalid"
+                                    required
+                                >
+                                <div class="invalid-feedback" *ngIf="formData.get('tipe')?.touched && formData.get('tipe')?.invalid">
+                                        <div *ngIf="formData.get('tipe')?.errors?.['required']">Tipe wajib diisi</div>
+                                        <div *ngIf="formData.get('tipe')?.errors?.['minlength']">Tipe minimal 4 karakter</div>
+                                    </div>
+                                <div class="form-text" *ngIf="!formData.get('tipe')?.touched && !formData.get('tipe')?.valid">tipe sudah sesuai dibutuhkan</div>
+                            </div>
+
+                            <!-- Deskripsi -->
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold text-black">
+                                    <i class="bi bi-file-earmark-text-fill me-2"></i>Deskripsi
+                                </label>
+                                <textarea 
+                                    class="form-control" 
+                                    rows="4"
+                                    placeholder="Tulis deskripsi..."
+                                    formControlName="deskripsi"
+                                    [class.is-invalid]="formData.get('deskripsi')?.touched && formData.get('deskripsi')?.invalid"
+                                    required></textarea>
+                                <div class="invalid-feedback" *ngIf="formData.get('deskripsi')?.touched && formData.get('deskripsi')?.invalid">
+                                    <div *ngIf="formData.get('deskripsi')?.errors?.['required']">Deskripsi wajib diisi</div>
+                                    <div *ngIf="formData.get('deskripsi')?.errors?.['minlength']">Deskripsi minimal 4 karakter</div>
+                                </div>
+                                <div class="form-text" *ngIf="!formData.get('deskripsi')?.touched && !formData.get('deskripsi')?.valid">Deskripsi sudah sesuai dibutuhkan</div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-grid gap-2 mb-3">
+                                <button
+                                    type="submit"
+                                    class="btn btn-lg text-white shadow-lg"
+                                    [disabled]="formData.invalid"
+                                    style="background-color: #3F2E1D;">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>Simpan
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

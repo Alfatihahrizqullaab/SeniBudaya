@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 let dbURL = "mongodb://localhost:27017/db_budayaNusantara";
 
 mongoose.connect(dbURL,{
-
+    
 });
 
 mongoose.connection.on("connected", () => {
