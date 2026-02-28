@@ -97,7 +97,10 @@
                                     (click)="openHapusModal(item._id)">
                             Hapus Budaya
                             </button>
-                            <a [routerLink]="['/edit-budaya', item._id]" class="btn btn-warning">Edit Budaya</a>
+                            @if(authService.isLoggedIn()){
+                                <a [routerLink]="['/edit-budaya', item._id]" class="btn btn-warning">Edit Budaya</a>
+                            }
+                            
                         </div>
                     </div>
                 </div>
